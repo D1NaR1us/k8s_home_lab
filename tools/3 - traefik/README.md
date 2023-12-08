@@ -5,7 +5,7 @@ These instructions guide you through installing Traefik using Helm, generating a
 ## 1. Purpose and Description of Traefik
 
 Traefik is a modern, dynamic, and flexible reverse proxy and load balancer that integrates seamlessly with Kubernetes. It simplifies the process of managing ingress traffic and provides features such as automatic SSL certificate provisioning and dynamic configuration.
-> [!INFO]
+> [!NOTE]
 > You could read more about [Traefik](https://doc.traefik.io/traefik/v2.10/)
 
 ## 2. Using Self-Signed Certificate

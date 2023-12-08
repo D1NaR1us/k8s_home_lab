@@ -28,7 +28,7 @@ helm insatll argocd argo/argo-cd --values ./argo_values.yaml -n argocd --set con
 ```
 Now you able to login https://argocd.home.lab as admin with your password. Don't forget add IP for that resource to your DNS. IP should be traefik LB address.
 
-> [!INFO]
+> [!NOTE]
 > <details><summary>Additional information how to work with ArgoCD</summary>
 > 
 > ### 1. Accessing ArgoCD UI

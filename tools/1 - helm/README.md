@@ -5,7 +5,7 @@ This structure provides an overview of Helm, installation steps, usage, managing
 ## 1. Purpose and Description of Helm
 
 Helm is a package manager for Kubernetes applications, simplifying the process of defining, installing, and upgrading even the most complex Kubernetes applications. It uses charts, which are packages of pre-configured Kubernetes resources, to streamline deployment workflows.
-> [!INFO]
+> [!NOTE]
 > You could read more about [Helm](https://helm.sh/docs/intro/install/)
 
 ## 2. Installing Helm

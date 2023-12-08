@@ -30,7 +30,7 @@ kubectl get services -o wide
 ```
 You will see external IP addresses provided by MetalLB for services with the LoadBalancer type.
 
-> [!WANRING]
+> [!WARNING]
 > Ensure that the `metallb_config.yaml` file contains the correct configuration for your network and environment.
 
 
