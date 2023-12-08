@@ -1,0 +1,7 @@
+apiVersion: v2
+name: My_Home-media
+description: HM helm chart
+type: application
+version: 0.0.1
+appVersion: 0.0.1
+

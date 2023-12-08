@@ -1,0 +1,142 @@
+# Custom values for Traefik
+# -- Create a default IngressClass for Traefik
+ingressClass:
+  enabled: true
+  isDefaultClass: true
+  name: my-ingress
+
+## Create an IngressRoute for the dashboard
+ingressRoute:
+  dashboard:
+    enabled: true
+    matchRule: Host(`traefik.home.lab`)
+    entryPoints: ["websecure"]
+
+# -- Add volumes to the traefik pod. The volume name will be passed to tpl.
+# This can be used to mount a cert pair or a configmap that holds a config.toml file.
+# After the volume has been mounted, add the configs into traefik by using the `additionalArguments` list below, eg:
+# `additionalArguments:
+# - "--providers.file.filename=/config/dynamic.toml"
+# - "--ping"
+# - "--ping.entrypoint=web"`
+# volumes: []
+# - name: traefik-secret-tls
+#   mountPath: "/certs"
+#   type: secret
+# - name: '{{ printf "%s-configs" .Release.Name }}'
+#   mountPath: "/config"
+#   type: configMap
+# 
+# -- Additional volumeMounts to add to the Traefik container
+# additionalVolumeMounts: []
+# -- For instance when using a logshipper for access logs
+# - name: traefik-logs
+#   mountPath: /var/log/traefik
+
+logs:
+  general:
+    # -- By default, the logs use a text format (common), but you can
+    format: json
+    # By default, the level is set to ERROR.
+    # -- Alternative logging levels are DEBUG, PANIC, FATAL, ERROR, WARN, and INFO.
+    level: ERROR
+  access:
+    enabled: true
+    format: json
+    filePath: "/var/log/traefik/access.log"
+    bufferingSize: 100
+
+metrics:
+  ## -- Prometheus is enabled by default.
+  ## -- It can be disabled by setting "prometheus: null"
+  prometheus: null
+
+# -- Global command arguments to be passed to all traefik's pods
+globalArguments:
+- "--global.checknewversion"
+- "--global.sendanonymoususage"
+
+env:
+- name: POD_NAME
+  valueFrom:
+    fieldRef:
+      fieldPath: metadata.name
+- name: POD_NAMESPACE
+  valueFrom:
+    fieldRef:
+      fieldPath: metadata.namespace
+
+ports:
+  traefik:
+    port: 9000
+    expose: false
+    exposedPort: 9000
+    protocol: TCP
+  web:
+    port: 8000
+    expose: true
+    exposedPort: 80
+    # targetPort: 80
+    protocol: TCP
+    # Added in 2.2, you can make permanent redirects via entrypoints.
+    # https://docs.traefik.io/routing/entrypoints/#redirection
+    redirectTo:
+      port: websecure
+      priority: 10
+    # Trust forwarded  headers information (X-Forwarded-*).
+    forwardedHeaders:
+      trustedIPs: []
+      insecure: false
+    # Enable the Proxy Protocol header parsing for the entry point
+    proxyProtocol:
+      trustedIPs: []
+      insecure: false
+  websecure:
+    port: 8443
+    expose: true
+    exposedPort: 443
+    # targetPort: 80
+    protocol: TCP
+    http3:
+      enabled: false
+    ## -- Trust forwarded  headers information (X-Forwarded-*).
+    forwardedHeaders:
+      trustedIPs: []
+      insecure: false
+    ## -- Enable the Proxy Protocol header parsing for the entry point
+    proxyProtocol:
+      trustedIPs: []
+      insecure: false
+    ## Set TLS at the entrypoint
+    ## https://doc.traefik.io/traefik/routing/entrypoints/#tls
+    tls:
+      enabled: true
+      # this is the name of a TLSOption definition
+      options: ""
+      domains: 
+      - main: home.lab
+        sans:
+          - "*.home.lab"
+
+extraObjects:
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: traefik-secret-tls
+    type: kubernetes.io/tls
+    data:
+      tls.crt: <base64-encoded-cert-data>
+      tls.key: <base64-encoded-key-data>
+
+tlsStore:
+  default:
+    defaultCertificate:
+      secretName: traefik-secret-tls
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "50Mi"
+  limits:
+    cpu: "300m"
+    memory: "150Mi"

@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-app
+  namespace: home-media
+  labels:
+    main: hm-app
+    app: {{ .Release.Name }}-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      main: hm-app
+      app: {{ .Release.Name }}-app
+  template:
+    metadata:
+      labels:
+        main: hm-app
+        app: {{ .Release.Name }}-app
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        {{ if eq .Release.Name "sonarr" }}image: linuxserver/sonarr
+        {{ else if eq .Release.Name "radarr" }}image: linuxserver/radarr
+        {{ else if eq .Release.Name "torrent" }}image: linuxserver/transmission
+        {{ else if eq .Release.Name "jackett" }}image: linuxserver/jackett
+        {{ else if eq .Release.Name "jellyfin" }}image: linuxserver/jellyfin
+        {{ else if eq .Release.Name "homepage" }}image: ghcr.io/gethomepage/homepage:latest
+        {{ else }}image: {{ .Values.container.image }}
+        {{ end }}
+        # image: {{ .Values.container.image }}
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: TZ
+          value: "Asia/Yerevan"
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        ports:
+        - name: {{ .Release.Name }}-web
+          # containerPort: {{ .Values.container.port }}
+          {{ if eq .Release.Name "sonarr" }}containerPort: 8989
+          {{ else if eq .Release.Name "radarr" }}containerPort: 7878
+          {{ else if eq .Release.Name "torrent" }}containerPort: 9091
+          {{ else if eq .Release.Name "jackett" }}containerPort: 9117
+          {{ else if eq .Release.Name "jellyfin" }}containerPort: 8096
+          {{ else if eq .Release.Name "homepage" }}containerPort: 3000
+          {{ else }}containerPort: {{ .Values.container.port }}
+          {{ end }}
+        volumeMounts:
+        - name: hm-volume
+          mountPath: ./downloads
+          subPath: ./home-media/downloads
+        - name: cephfs-volume
+          mountPath: ./config
+          subPath: ./home-media/{{ .Release.Name }}/config
+        resources:
+          requests:
+            memory: 500Mi
+            cpu: 256m
+          limits:
+            memory: 1024Mi
+            cpu: 1000m
+      volumes:
+      - name: hm-volume
+        persistentVolumeClaim:
+          claimName: hm-claim
+      - name: cephfs-volume
+        cephfs:
+          monitors:
+            - 192.168.50.10
+          user: admin
+          secretRef:
+            name: ceph-secret
+          readOnly: false

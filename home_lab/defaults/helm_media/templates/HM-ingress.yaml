@@ -1,0 +1,17 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: hm-{{ .Release.Name }}-ingress
+  namespace: home-media
+  labels:
+    main: hm-app
+    app: {{ .Release.Name }}-app
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`{{ .Release.Name }}.home.lab`)
+      kind: Rule
+      services:
+        - name: {{ .Release.Name }}-svc
+          port: {{ .Release.Name }}-web
