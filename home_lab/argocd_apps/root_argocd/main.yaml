@@ -5,11 +5,11 @@ metadata:
   namespace: argocd
 spec: 
   destination:
-    # name: in-cluster
+    name: in-cluster
     namespace: argocd
   source:
-    path: home_lab/argocd_apps
-    repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
+    path: home_lab/argocd_apps/apps
+    repoURL: https://github.com/D1NaR1us/k8s_home_lab
     targetRevision: HEAD
   project: default
   syncPolicy:
