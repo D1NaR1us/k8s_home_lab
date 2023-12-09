@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
 spec: 
   destination:
-    name: in-cluster
+    # name: in-cluster
     namespace: argocd
   source:
     path: home_lab/argocd_apps
