@@ -9,7 +9,7 @@ spec:
     namespace: argocd
   source:
     path: home_lab/defaults/helm_media
-    repoURL: https://github.com/D1NaR1us/k8s_home_lab.gits
+    repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
     targetRevision: HEAD
   project: default
   syncPolicy:
