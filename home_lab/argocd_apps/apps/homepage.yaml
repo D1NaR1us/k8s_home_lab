@@ -8,11 +8,13 @@ spec:
     name: in-cluster
     namespace: argocd
   source:
-    path: defaults/helm_media
-    repoURL: https://github.com/D1NaR1us/helm_home-media
+    path: home_lab/defaults/helm_media
+    repoURL: https://github.com/D1NaR1us/k8s_home_lab.gits
     targetRevision: HEAD
   project: default
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

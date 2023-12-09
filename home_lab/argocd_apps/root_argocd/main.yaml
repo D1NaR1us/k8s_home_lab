@@ -8,8 +8,8 @@ spec:
     name: in-cluster
     namespace: argocd
   source:
-    path: argocd_apps/apps
-    repoURL: https://github.com/D1NaR1us/helm_home-media
+    path: home_lab/argocd_apps
+    repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
     targetRevision: HEAD
   project: default
   syncPolicy:

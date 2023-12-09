@@ -9,7 +9,7 @@ ingressClass:
 ingressRoute:
   dashboard:
     enabled: true
-    matchRule: Host(`traefik.home.lab`)
+    matchRule: "Host(`{{ .Release.Name }}.home.lab`)"
     entryPoints: ["websecure"]
 
 # -- Add volumes to the traefik pod. The volume name will be passed to tpl.
@@ -43,7 +43,7 @@ logs:
   access:
     enabled: true
     format: json
-    filePath: "/var/log/traefik/access.log"
+    filePath: "/var/log/{{ .Release.Name }}/access.log"
     bufferingSize: 100
 
 metrics:
@@ -122,7 +122,7 @@ extraObjects:
   - apiVersion: v1
     kind: Secret
     metadata:
-      name: traefik-secret-tls
+      name: "{{ .Release.Name }}-secret-tls"
     type: kubernetes.io/tls
     data:
       tls.crt: <base64-encoded-cert-data>
@@ -131,7 +131,7 @@ extraObjects:
 tlsStore:
   default:
     defaultCertificate:
-      secretName: traefik-secret-tls
+      secretName: "{{ .Release.Name }}-secret-tls"
 
 resources:
   requests:
