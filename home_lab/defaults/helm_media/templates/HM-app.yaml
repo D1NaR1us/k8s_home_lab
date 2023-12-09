@@ -29,7 +29,7 @@ spec:
         {{ else }}image: {{ .Values.container.image }}
         {{ end }}
         # image: {{ .Values.container.image }}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         env:
         - name: TZ
           value: "Asia/Yerevan"
