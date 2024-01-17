@@ -59,9 +59,11 @@ spec:
           requests:
             memory: 500Mi
             cpu: 256m
-          limits:
-            memory: 1024Mi
-            cpu: 1000m
+          {{ if eq .Release.Name "jellyfin" }}
+            limits:
+              memory: 500Mi
+              cpu: 500m
+          
       volumes:
       - name: hm-volume
         persistentVolumeClaim:
