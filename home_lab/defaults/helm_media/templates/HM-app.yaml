@@ -60,9 +60,12 @@ spec:
             memory: 500Mi
             cpu: 256m
           {{ if eq .Release.Name "jellyfin" }}
+            limits: null
+          {{ else }}
             limits:
               memory: 500Mi
               cpu: 500m
+          {{ end }}
           
       volumes:
       - name: hm-volume
