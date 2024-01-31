@@ -30,13 +30,13 @@ spec:
         {{ end }}
         # image: {{ .Values.container.image }}
         imagePullPolicy: Always
-        # env:
-        # - name: TZ
-        #   value: "Asia/Yerevan"
-        # - name: PUID
-        #   value: "1000"
-        # - name: PGID
-        #   value: "1000"
+        env:
+        - name: TZ
+          value: "Asia/Yerevan"
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
         ports:
         - name: {{ .Release.Name }}-web
           # containerPort: {{ .Values.container.port }}
