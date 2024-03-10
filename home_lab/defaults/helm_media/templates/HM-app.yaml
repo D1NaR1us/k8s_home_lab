@@ -53,8 +53,10 @@ spec:
           mountPath: ./downloads
           subPath: ./home-media/downloads
         - name: cephfs-volume
+          {{ if neq .Release.Name "torrent" }}
           mountPath: ./config
           subPath: ./home-media/{{ .Release.Name }}/config
+          {{ end }}
         resources:
           requests:
             memory: 500Mi
