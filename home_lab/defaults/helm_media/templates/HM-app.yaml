@@ -52,11 +52,11 @@ spec:
         - name: hm-volume
           mountPath: ./downloads
           subPath: ./home-media/downloads
-        - name: cephfs-volume
-          {{ if ne .Release.Name "torrent" }}
-          mountPath: ./config
-          subPath: ./home-media/{{ .Release.Name }}/config
-          {{ end }}
+        {{ if ne .Release.Name "torrent" }}
+          - name: cephfs-volume
+            mountPath: ./config
+            subPath: ./home-media/{{ .Release.Name }}/config
+        {{ end }}
         resources:
           requests:
             memory: 500Mi
