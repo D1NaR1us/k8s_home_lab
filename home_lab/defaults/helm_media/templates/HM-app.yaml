@@ -52,10 +52,12 @@ spec:
         - name: hm-volume
           mountPath: ./downloads
           subPath: ./data_my/Downloads
+          readOnly: false
         # {{ if eq .Release.Name "torrent" }}
         - name: hm-volume
           mountPath: ./config
           subPath: ./data_my/home-media/{{ .Release.Name }}/config
+          readOnly: false
         # {{ else if eq .Release.Name "jackett" }}
         # - name: hm-volume
         #   mountPath: ./config
@@ -81,7 +83,7 @@ spec:
       - name: hm-volume
         persistentVolumeClaim:
           claimName: hm-claim
-          readOnly: false
+          
       # - name: cephfs-volume
       #   cephfs:
       #     monitors:
