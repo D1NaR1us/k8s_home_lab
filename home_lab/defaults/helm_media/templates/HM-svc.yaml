@@ -12,7 +12,7 @@ spec:
     {{ else if eq .Release.Name "radarr" }}port: 7878
     {{ else if eq .Release.Name "torrent" }}port: 9091
     {{ else if eq .Release.Name "jackett" }}port: 9117
-    {{ else if eq .Release.Name "jellyfin" }}port: 8096
+    # {{ else if eq .Release.Name "jellyfin" }}port: 8096
     {{ else if eq .Release.Name "homepage" }}port: 3000
     {{ else }}port: {{ .Values.container.port }}
     {{ end }}
@@ -20,7 +20,7 @@ spec:
     {{ else if eq .Release.Name "radarr" }}targetPort: 7878
     {{ else if eq .Release.Name "torrent" }}targetPort: 9091
     {{ else if eq .Release.Name "jackett" }}targetPort: 9117
-    {{ else if eq .Release.Name "jellyfin" }}targetPort: 8096
+    # {{ else if eq .Release.Name "jellyfin" }}targetPort: 8096
     {{ else if eq .Release.Name "homepage" }}targetPort: 3000
     {{ else }}port: {{ .Values.container.port }}
     {{ end }}
