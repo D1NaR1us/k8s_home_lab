@@ -33,10 +33,10 @@ spec:
         env:
         - name: TZ
           value: "Asia/Yerevan"
-        # - name: PUID
-        #   value: "1000"
-        # - name: PGID
-        #   value: "1000"
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
         ports:
         - name: {{ .Release.Name }}-web
           # containerPort: {{ .Values.container.port }}
@@ -51,19 +51,19 @@ spec:
         volumeMounts:
         - name: hm-volume
           mountPath: ./downloads
-          subPath: ./Downloads
+          subPath: ./data_my/Downloads
         {{ if eq .Release.Name "torrent" }}
         - name: hm-volume
           mountPath: ./config
-          subPath: ./home-media/{{ .Release.Name }}/config
+          subPath: ./data_my/home-media/{{ .Release.Name }}/config
         {{ else if eq .Release.Name "jackett" }}
         - name: hm-volume
           mountPath: ./config
-          subPath: ./home-media/{{ .Release.Name }}/config
+          subPath: ./data_my/home-media/{{ .Release.Name }}/config
         {{ else if eq .Release.Name "homepage" }}
         - name: hm-volume
           mountPath: ./config
-          subPath: ./home-media/{{ .Release.Name }}/config
+          subPath: ./data_my/home-media/{{ .Release.Name }}/config
         {{ end }}
         resources:
           requests:
