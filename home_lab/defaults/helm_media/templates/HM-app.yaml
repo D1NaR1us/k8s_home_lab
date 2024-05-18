@@ -50,12 +50,12 @@ spec:
           {{ end }}
         volumeMounts:
         - name: hm-volume
-          mountPath: ./downloads
+          mountPath: ./data/downloads
           subPath: ./data_my/Downloads
           # readOnly: false
         # {{ if eq .Release.Name "torrent" }}
         - name: hm-volume
-          mountPath: ./config
+          mountPath: ./data/config
           subPath: ./data_my/home-media/{{ .Release.Name }}/config
           # readOnly: false
         # {{ else if eq .Release.Name "jackett" }}
