@@ -52,7 +52,7 @@ spec:
         - name: hm-volume
           mountPath: ./downloads
           subPath: ./Downloads
-        {{ if ne .Release.Name "sonarr","radarr }}
+        {{ if ne .Release.Name "sonarr" or "radarr }}
         - name: hm-volume
           mountPath: ./config
           subPath: ./home-media/{{ .Release.Name }}/config
