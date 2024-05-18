@@ -24,7 +24,7 @@ spec:
         {{ else if eq .Release.Name "radarr" }}image: linuxserver/radarr
         {{ else if eq .Release.Name "torrent" }}image: linuxserver/transmission
         {{ else if eq .Release.Name "jackett" }}image: linuxserver/jackett
-        {{ else if eq .Release.Name "jellyfin" }}image: linuxserver/jellyfin
+        # {{ else if eq .Release.Name "jellyfin" }}image: linuxserver/jellyfin
         {{ else if eq .Release.Name "homepage" }}image: ghcr.io/gethomepage/homepage:latest
         {{ else }}image: {{ .Values.container.image }}
         {{ end }}
@@ -44,40 +44,40 @@ spec:
           {{ else if eq .Release.Name "radarr" }}containerPort: 7878
           {{ else if eq .Release.Name "torrent" }}containerPort: 9091
           {{ else if eq .Release.Name "jackett" }}containerPort: 9117
-          {{ else if eq .Release.Name "jellyfin" }}containerPort: 8096
+          # {{ else if eq .Release.Name "jellyfin" }}containerPort: 8096
           {{ else if eq .Release.Name "homepage" }}containerPort: 3000
           {{ else }}containerPort: {{ .Values.container.port }}
           {{ end }}
         volumeMounts:
         - name: hm-volume
           mountPath: ./downloads
-          subPath: ./home-media/downloads
-        {{ if ne .Release.Name "torrent" }}
-        - name: cephfs-volume
-          mountPath: ./config
-          subPath: ./home-media/{{ .Release.Name }}/config
-        {{ end }}
+        #   subPath: ./Downloads
+        # {{ if ne .Release.Name "torrent" }}
+        # - name: cephfs-volume
+        #   mountPath: ./config
+        #   subPath: ./home-media/{{ .Release.Name }}/config
+        # {{ end }}
         resources:
           requests:
             memory: 500Mi
             cpu: 256m
-          {{ if eq .Release.Name "jellyfin" }}
-          limits: null
-          {{ else }}
+          # {{ if eq .Release.Name "jellyfin" }}
+          # limits: null
+          # {{ else }}
           limits:
             memory: 500Mi
             cpu: 500m
-          {{ end }}
+          # {{ end }}
           
       volumes:
       - name: hm-volume
         persistentVolumeClaim:
           claimName: hm-claim
-      - name: cephfs-volume
-        cephfs:
-          monitors:
-            - 192.168.50.10
-          user: admin
-          secretRef:
-            name: ceph-secret
-          readOnly: false
+      # - name: cephfs-volume
+      #   cephfs:
+      #     monitors:
+      #       - 192.168.50.10
+      #     user: admin
+      #     secretRef:
+      #       name: ceph-secret
+      #     readOnly: false
