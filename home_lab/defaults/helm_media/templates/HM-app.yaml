@@ -52,11 +52,18 @@ spec:
         - name: hm-volume
           mountPath: ./downloads
           subPath: ./Downloads
-        {{ if ne .Release.Name "sonarr" or "radarr" }}
+        {{ if eq .Release.Name "torrent" }}
         - name: hm-volume
           mountPath: ./config
           subPath: ./home-media/{{ .Release.Name }}/config
-        
+        {{ else if eq .Release.Name "jackett" }}
+        - name: hm-volume
+          mountPath: ./config
+          subPath: ./home-media/{{ .Release.Name }}/config
+        {{ else if eq .Release.Name "homepage" }}
+        - name: hm-volume
+          mountPath: ./config
+          subPath: ./home-media/{{ .Release.Name }}/config
         {{ end }}
         resources:
           requests:
