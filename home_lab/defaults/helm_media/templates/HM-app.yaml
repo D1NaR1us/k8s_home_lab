@@ -52,43 +52,18 @@ spec:
         - name: hm-volume
           mountPath: ./data/downloads
           subPath: ./data_my/Downloads
-          # readOnly: false
-        # {{ if eq .Release.Name "torrent" }}
         - name: hm-volume
           mountPath: ./config
           subPath: ./data_my/home-media/{{ .Release.Name }}/config
-          # readOnly: false
-        # {{ else if eq .Release.Name "jackett" }}
-        # - name: hm-volume
-        #   mountPath: ./config
-        #   subPath: ./data_my/home-media/{{ .Release.Name }}/config
-        # {{ else if eq .Release.Name "homepage" }}
-        # - name: hm-volume
-        #   mountPath: ./config
-        #   subPath: ./data_my/home-media/{{ .Release.Name }}/config
-        # {{ end }}
         resources:
           requests:
             memory: 500Mi
             cpu: 256m
-          # {{ if eq .Release.Name "jellyfin" }}
-          # limits: null
-          # {{ else }}
           limits:
             memory: 500Mi
             cpu: 500m
-          # {{ end }}
           
       volumes:
       - name: hm-volume
         persistentVolumeClaim:
           claimName: hm-claim
-          
-      # - name: cephfs-volume
-      #   cephfs:
-      #     monitors:
-      #       - 192.168.50.10
-      #     user: admin
-      #     secretRef:
-      #       name: ceph-secret
-      #     readOnly: false
