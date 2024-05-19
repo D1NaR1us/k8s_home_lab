@@ -64,6 +64,10 @@ spec:
         - name: hm-volume
           mountPath: ./config
           subPath: ./data_my/home-media/{{ .Release.Name }}/config
+        {{ else if eq .Release.Name "sonarr" }}
+        - name: hm-volume
+          mountPath: ./config
+          subPath: ./data_my/home-media/{{ .Release.Name }}/config
         {{ end }}
         resources:
           requests:
