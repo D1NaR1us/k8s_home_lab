@@ -52,10 +52,19 @@ spec:
         - name: hm-volume
           mountPath: ./data/downloads
           subPath: ./data_my/Downloads
+        {{ if eq .Release.Name "torrent" }}
         - name: hm-volume
           mountPath: ./config
           subPath: ./data_my/home-media/{{ .Release.Name }}/config
-          readOnly: true
+        {{ else if eq .Release.Name "jackett" }}
+        - name: hm-volume
+          mountPath: ./config
+          subPath: ./data_my/home-media/{{ .Release.Name }}/config
+        {{ else if eq .Release.Name "homepage" }}
+        - name: hm-volume
+          mountPath: ./config
+          subPath: ./data_my/home-media/{{ .Release.Name }}/config
+        {{ end }}
         resources:
           requests:
             memory: 500Mi
