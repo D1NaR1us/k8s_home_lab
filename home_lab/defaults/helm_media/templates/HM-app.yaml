@@ -52,9 +52,9 @@ spec:
         - name: hm-volume
           mountPath: ./data/downloads
           subPath: ./data_my/Downloads
-        - name: cephfs-volume
+        - name: localdirs-volume
           mountPath: ./config
-          subPath: ./data_my/home-media/{{ .Release.Name }}/config
+          subPath: ./{{ .Release.Name }}/config
         resources:
           requests:
             memory: 500Mi
@@ -66,11 +66,14 @@ spec:
       - name: hm-volume
         persistentVolumeClaim:
           claimName: hm-claim
-      - name: cephfs-volume
-        cephfs:
-          monitors:
-            - 192.168.50.10
-          user: admin
-          secretRef:
-            name: ceph-secret
-          readOnly: false
+      - name: localdirs-volume
+      hostPath:
+        path: /mnt/home-media-configs
+      # - name: cephfs-volume
+      #   cephfs:
+      #     monitors:
+      #       - 192.168.50.10
+      #     user: admin
+      #     secretRef:
+      #       name: ceph-secret
+      #     readOnly: false
