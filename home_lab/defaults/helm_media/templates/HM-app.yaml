@@ -24,7 +24,7 @@ spec:
         {{ else if eq .Release.Name "radarr" }}image: linuxserver/radarr
         {{ else if eq .Release.Name "torrent" }}image: linuxserver/transmission
         {{ else if eq .Release.Name "jackett" }}image: linuxserver/jackett
-        {{ else if eq .Release.Name "jellyfin" }}image: linuxserver/jellyfin
+        # {{ else if eq .Release.Name "jellyfin" }}image: linuxserver/jellyfin
         {{ else if eq .Release.Name "homepage" }}image: ghcr.io/gethomepage/homepage:latest
         {{ else }}image: {{ .Values.container.image }}
         {{ end }}
@@ -44,7 +44,7 @@ spec:
           {{ else if eq .Release.Name "radarr" }}containerPort: 7878
           {{ else if eq .Release.Name "torrent" }}containerPort: 9091
           {{ else if eq .Release.Name "jackett" }}containerPort: 9117
-          {{ else if eq .Release.Name "jellyfin" }}containerPort: 8096
+          # {{ else if eq .Release.Name "jellyfin" }}containerPort: 8096
           {{ else if eq .Release.Name "homepage" }}containerPort: 3000
           {{ else }}containerPort: {{ .Values.container.port }}
           {{ end }}
