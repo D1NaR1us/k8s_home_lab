@@ -1,13 +1,13 @@
-apiVersion: v1
+apiVersion: v2
 entries:
   home_lab:
-  - apiVersion: v1
-    appVersion: 1.0.0
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2024-09-04"
-    description: Helm Chart to create all resource for home lab
+    description: Helm Chart to create all resources for home lab
     name: home_lab
     type: application
     urls:
     - Home_Lab.tar
-    version: 1.0.0
+    version: 0.0.1
 generated: "2024-09-04"
