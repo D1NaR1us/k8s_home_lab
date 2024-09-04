@@ -8,6 +8,6 @@ entries:
     name: home_lab
     type: application
     urls:
-    - home_lab.tar
+    - Home_Lab.tar
     version: 1.0.0
 generated: "2024-09-04"
