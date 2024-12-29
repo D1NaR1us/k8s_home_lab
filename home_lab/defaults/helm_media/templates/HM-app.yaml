@@ -64,6 +64,7 @@ spec:
           limits:
             memory: 500Mi
             cpu: 500m
+            {{ if eq .Release.Name "jellyfin" }}gpu.intel.com: "1"
       volumes:
       - name: hm-volume
         persistentVolumeClaim:
