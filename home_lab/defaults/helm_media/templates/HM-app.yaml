@@ -18,6 +18,8 @@ spec:
         main: hm-app
         app: {{ .Release.Name }}-app
     spec:
+      nodeSelector:
+        {{ if eq .Release.Name "jellyfin" }}workload: gpu
       containers:
       - name: {{ .Release.Name }}
         {{ if eq .Release.Name "sonarr" }}image: linuxserver/sonarr
