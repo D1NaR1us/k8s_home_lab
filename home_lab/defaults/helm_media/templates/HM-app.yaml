@@ -58,6 +58,8 @@ spec:
         - name: hm-volume
           mountPath: ./config
           subPath: ./data_my/home-media/{{ .Release.Name }}/config
+        - mountPath: /dev/dri
+          name: dev-dri
         resources:
           requests:
             memory: 500Mi
@@ -69,6 +71,10 @@ spec:
       - name: hm-volume
         persistentVolumeClaim:
           claimName: hm-claim
+      - name: dev-dri
+        hostPath:
+          path: /dev/dri
+          type: Directory
       # - name: localdirs-volume
       # hostPath:
       #   path: /mnt/home-media-configs
