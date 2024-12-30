@@ -58,7 +58,7 @@ spec:
         - name: hm-volume
           mountPath: ./config
           subPath: ./data_my/home-media/{{ .Release.Name }}/config
-        - {{ if eq .Release.Name "jellyfin" }}mountPath: /dev/dri
+        {{ if eq .Release.Name "jellyfin" }}mountPath: /dev/dri
           name: dev-dri
           {{ end }}
         resources:
