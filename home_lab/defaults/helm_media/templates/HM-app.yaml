@@ -58,12 +58,12 @@ spec:
         - name: hm-volume
           mountPath: ./config
           subPath: ./data_my/home-media/{{ .Release.Name }}/config
-        {{ if eq .Release.Name "jellyfin" }}
-        - name: dev-dri-card1
-          mountPath: /dev/dri/card1
-        - name: dev-dri-render
-          mountPath: /dev/dri/renderD128
-        {{ end }}
+        # {{ if eq .Release.Name "jellyfin" }}
+        # - name: dev-dri-card1
+        #   mountPath: /dev/dri/card1
+        # - name: dev-dri-render
+        #   mountPath: /dev/dri/renderD128
+        # {{ end }}
         resources:
           requests:
             memory: 500Mi
@@ -71,34 +71,35 @@ spec:
           limits:
             memory: 500Mi
             cpu: 500m
-            {{ if eq .Release.Name "jellyfin" }}gpu.intel.com/i915: "1"
+            {{ if eq .Release.Name "jellyfin" }}
+            gpu.intel.com/i915: "1"
             {{ end }}
-        {{ if eq .Release.Name "jellyfin" }}
-        securityContext:
-          capabilities:
-            add: ["SYS_ADMIN"]
-          devices:
-            - name: /dev/dri/card1
-            - name: /dev/dri/renderD128
-        {{ end }}
+        # {{ if eq .Release.Name "jellyfin" }}
+        # securityContext:
+        #   capabilities:
+        #     add: ["SYS_ADMIN"]
+        #   devices:
+        #     - name: /dev/dri/card1
+        #     - name: /dev/dri/renderD128
+        # {{ end }}
       volumes:
       - name: hm-volume
         persistentVolumeClaim:
           claimName: hm-claim
-      {{ if eq .Release.Name "jellyfin" }}
-      - name: dev-dri-card1
-        hostPath:
-          path: /dev/dri/card1
-          type: CharDevice
-      - name: dev-dri-render
-        hostPath:
-          path: /dev/dri/renderD128
-          type: CharDevice
+      # {{ if eq .Release.Name "jellyfin" }}
+      # - name: dev-dri-card1
+      #   hostPath:
+      #     path: /dev/dri/card1
+      #     type: CharDevice
+      # - name: dev-dri-render
+      #   hostPath:
+      #     path: /dev/dri/renderD128
+      #     type: CharDevice
       # - name: dev-dri
       #   hostPath:
       #     path: /dev/dri
       #     type: Directory
-      {{ end }}
+      # {{ end }}
       # - name: localdirs-volume
       # hostPath:
       #   path: /mnt/home-media-configs
