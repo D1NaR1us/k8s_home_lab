@@ -59,8 +59,6 @@ spec:
           mountPath: ./config
           subPath: ./data_my/home-media/{{ .Release.Name }}/config
         {{ if eq .Release.Name "jellyfin" }}
-        - name: dev-dri-card0
-          mountPath: /dev/dri/card0
         - name: dev-dri-card1
           mountPath: /dev/dri/card1
         - name: dev-dri-render
@@ -80,10 +78,6 @@ spec:
         persistentVolumeClaim:
           claimName: hm-claim
       {{ if eq .Release.Name "jellyfin" }}
-      - name: dev-dri-card0
-        hostPath:
-          path: /dev/dri/card0
-          type: CharDevice
       - name: dev-dri-card1
         hostPath:
           path: /dev/dri/card1
