@@ -59,8 +59,12 @@ spec:
           mountPath: ./config
           subPath: ./data_my/home-media/{{ .Release.Name }}/config
         {{ if eq .Release.Name "jellyfin" }}
-        - name: dev-dri
-          mountPath: /dev/dri
+        - name: dev-dri-card
+          mountPath: /dev/dri/card1
+          subPath: /dev/dri/card1
+        - name: dev-dri-render
+          mountPath: /dev/dri/renderD128
+          subPath: /dev/dri/renderD128
         {{ end }}
         resources:
           requests:
@@ -75,12 +79,12 @@ spec:
       - name: hm-volume
         persistentVolumeClaim:
           claimName: hm-claim
-      {{ if eq .Release.Name "jellyfin" }}
-      - name: dev-dri
-        hostPath:
-          path: /dev/dri
-          type: Directory
-      {{ end }}
+      # {{ if eq .Release.Name "jellyfin" }}
+      # - name: dev-dri
+      #   hostPath:
+      #     path: /dev/dri
+      #     type: Directory
+      # {{ end }}
       # - name: localdirs-volume
       # hostPath:
       #   path: /mnt/home-media-configs
