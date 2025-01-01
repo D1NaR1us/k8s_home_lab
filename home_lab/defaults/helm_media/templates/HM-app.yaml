@@ -73,6 +73,14 @@ spec:
             cpu: 500m
             {{ if eq .Release.Name "jellyfin" }}gpu.intel.com/i915: "1"
             {{ end }}
+        {{ if eq .Release.Name "jellyfin" }}
+        securityContext:
+          capabilities:
+            add: ["SYS_ADMIN"]
+          devices:
+            - name: /dev/dri/card1
+            - name: /dev/dri/renderD128
+        {{ end }}
       volumes:
       - name: hm-volume
         persistentVolumeClaim:
