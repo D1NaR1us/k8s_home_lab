@@ -13,7 +13,7 @@ spec:
     targetRevision: HEAD
   project: default
   syncPolicy:
-    # automated:
+    automated:
     #   prune: true
     #   selfHeal: false
     syncOptions:
