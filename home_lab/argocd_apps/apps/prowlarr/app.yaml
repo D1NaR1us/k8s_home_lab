@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: test-main-home-media
+  name: prowlarr
   namespace: argocd
 spec: 
   destination:
     name: in-cluster
     namespace: argocd
   source:
-    path: home_lab/argocd_apps/apps
-    repoURL: https://github.com/D1NaR1us/k8s_home_lab
-    targetRevision: HEAD
+    path: home_lab/defaults/helm_media
+    repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
+    targetRevision: prowlarr
   project: default
   syncPolicy:
     automated:
