@@ -11,6 +11,12 @@
 #     path: home_lab/defaults/helm_media
 #     repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
 #     targetRevision: HEAD
+      # helm:
+      # values: |
+      #   container:
+      #     image: linuxserver/jellyfin:latest
+      #     port: 8096
+      #     targetPort: 8096
 #   project: default
 #   syncPolicy:
 #     automated:

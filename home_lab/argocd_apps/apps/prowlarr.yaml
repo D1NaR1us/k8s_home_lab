@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: torrent
+  name: prowlarr
   namespace: argocd
 spec: 
   destination:
@@ -14,9 +14,9 @@ spec:
     helm:
       values: |
         container:
-          image: linuxserver/transmission:latest
-          port: 9091
-          targetPort: 9091
+          image: linuxserver/prowlarr:latest
+          port: 9696
+          targetPort: 9696
   project: default
   syncPolicy:
     automated:

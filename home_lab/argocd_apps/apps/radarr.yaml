@@ -11,6 +11,12 @@ spec:
     path: home_lab/defaults/helm_media
     repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
     targetRevision: HEAD
+    helm:
+      values: |
+        container:
+          image: linuxserver/radarr:latest
+          port: 7878
+          targetPort: 7878
   project: default
   syncPolicy:
     automated:
