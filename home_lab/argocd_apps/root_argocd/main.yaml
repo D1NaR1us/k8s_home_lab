@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: test-main-home-media
+  name: main-home-media
   namespace: argocd
 spec: 
   destination:

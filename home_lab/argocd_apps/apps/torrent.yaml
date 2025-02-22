@@ -11,6 +11,12 @@ spec:
     path: home_lab/defaults/helm_media
     repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
     targetRevision: HEAD
+    helm:
+      values: |
+        container:
+          image: linuxserver/transmission:latest
+          port: 9091
+          targetPort: 9091
   project: default
   syncPolicy:
     automated:

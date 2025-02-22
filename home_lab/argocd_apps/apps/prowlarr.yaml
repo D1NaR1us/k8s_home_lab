@@ -10,13 +10,11 @@ spec:
   source:
     path: home_lab/defaults/helm_media
     repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
-    targetRevision: "prowlarr"
+    targetRevision: HEAD
     helm:
       values: |
-        image:
-          repository: linuxserver/prowlarr
-          tag: latest
-        service:
+        container:
+          image: linuxserver/prowlarr:latest
           port: 9696
           targetPort: 9696
   project: default

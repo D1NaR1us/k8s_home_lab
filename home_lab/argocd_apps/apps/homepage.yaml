@@ -11,6 +11,12 @@ spec:
     path: home_lab/defaults/helm_media
     repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
     targetRevision: HEAD
+    helm:
+      values: |
+        container:
+          image: ghcr.io/gethomepage/homepage:latest
+          port: 3000
+          targetPort: 3000
   project: default
   syncPolicy:
     automated:
