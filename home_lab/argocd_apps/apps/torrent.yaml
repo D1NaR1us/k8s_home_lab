@@ -14,9 +14,9 @@ spec:
     helm:
       values: |
         container:
-          image: linuxserver/transmission:latest
-          port: 9091
-          targetPort: 9091
+          image: linuxserver/qbittorrent:latest
+          port: 8080
+          targetPort: 8080
   project: default
   syncPolicy:
     automated:
