@@ -10,7 +10,7 @@ spec:
   source:
     path: home_lab/defaults/helm_media
     repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
-    targetRevision: prowlarr
+    targetRevision: "prowlarr"
   project: default
   syncPolicy:
     automated:
