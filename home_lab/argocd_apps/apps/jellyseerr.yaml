@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: overseerr
+  name: jellyseerr
   namespace: argocd
 spec: 
   destination:
@@ -14,7 +14,7 @@ spec:
     helm:
       values: |
         container:
-          image: linuxserver/overseerr:latest
+          image: fallenbagel/jellyseerr:latest
           port: 5055
           targetPort: 5055
   project: default
