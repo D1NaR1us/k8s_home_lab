@@ -10,7 +10,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`{{ .Release.Name }}.media.home.lab`)
+    - match: Host(`{{ .Release.Name }}.home.lab`)
       kind: Rule
       services:
         - name: {{ .Release.Name }}-svc
