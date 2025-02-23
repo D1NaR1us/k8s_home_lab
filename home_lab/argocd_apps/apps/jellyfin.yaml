@@ -11,7 +11,7 @@ spec:
     path: home_lab/defaults/helm_media
     repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
     targetRevision: HEAD
-      helm:
+    helm:
       values: |
         container:
           image: linuxserver/jellyfin:latest
@@ -21,6 +21,6 @@ spec:
   syncPolicy:
     automated:
       prune: true
-      selfHeal: false
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true
