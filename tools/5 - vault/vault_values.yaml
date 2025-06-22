@@ -1,0 +1,33 @@
+server:
+  ingress:
+    enabled: false  # Выключаем встроенный ingress, чтобы использовать extraObjects
+
+  standalone:
+    enabled: true
+    config: |
+      ui = true
+      listener "tcp" {
+        address = "0.0.0.0:8200"
+        tls_disable = 1
+      }
+      storage "file" {
+        path = "/vault/data"
+      }
+      disable_mlock = true
+
+  service:
+    enabled: true
+    type: ClusterIP
+    port: 8200
+
+  volumeMounts: []
+  volumes: []
+
+  dataStorage:
+    enabled: true
+    storageClass: local-path
+    size: 1Gi
+
+ha:
+  enabled: false
+
