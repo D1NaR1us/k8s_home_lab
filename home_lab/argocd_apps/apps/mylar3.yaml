@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: kapowarr
+  name: mylar3
   namespace: argocd
 spec: 
   destination:
@@ -14,9 +14,9 @@ spec:
     helm:
       values: |
         container:
-          image: mrcas/kapowarr:latest
-          port: 5656
-          targetPort: 5656
+          image: lscr.io/linuxserver/mylar3:latest
+          port: 8090
+          targetPort: 8090
   project: default
   syncPolicy:
     automated:
