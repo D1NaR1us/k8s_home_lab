@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: mylar3
+  name: mylar
   namespace: argocd
 spec: 
   destination:
