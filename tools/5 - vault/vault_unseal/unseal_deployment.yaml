@@ -21,12 +21,12 @@ spec:
           args:
             - |
               while true; do
-                status=$(vault status -address=http://vault.vault.svc.cluster.local:8200 2>/dev/null || echo "fail")
+                status=$(vault status -address=http://vault.svc.cluster.local:8200 2>/dev/null || echo "fail")
                 echo "Vault status: $status"
                 if echo "$status" | grep -q 'Sealed.*true'; then
                   echo "Vault is sealed — unsealing..."
                   for k in key1 key2 key3; do
-                    vault operator unseal -address=http://vault.vault.svc.cluster.local:8200 $(cat /etc/keys/$k);
+                    vault operator unseal -address=http://vault.svc.cluster.local:8200 $(cat /etc/keys/$k);
                   done
                 else
                   echo "Vault is unsealed."
@@ -35,7 +35,7 @@ spec:
               done
           env:
             - name: VAULT_ADDR
-              value: "http://vault.vault.svc.cluster.local:8200"
+              value: "http://vault.svc.cluster.local:8200"
           volumeMounts:
             - name: keys
               mountPath: /etc/keys
