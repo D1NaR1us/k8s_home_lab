@@ -11,8 +11,7 @@ configs:
     # -- Run server without TLS
     server.insecure: true
   secret:
-    ## `htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a/'`
-    argocdServerAdminPassword: ""
+    create: false
 
 # -- Array of extra K8s manifests to deploy
 ## Note: Supports use of custom Helm templates
