@@ -24,3 +24,12 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+
+
+# if you have postgres DB, you may add these part of configuration into config.xml. It will avoid some DB lock issue in a future
+# <PostgresUser>postgres</PostgresUser>
+# <PostgresPassword><TYPE_HERE_YOUR_PASS></PostgresPassword>
+# <PostgresPort>5432</PostgresPort>
+# <PostgresHost><TYPE_HERE_IP_ADDR></PostgresHost>
+# <AnalyticsEnabled>False</AnalyticsEnabled>
+# <UpdateAutomatically>True</UpdateAutomatically>
