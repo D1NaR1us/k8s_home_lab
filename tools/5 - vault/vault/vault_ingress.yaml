@@ -1,7 +1,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: "vault-ingress"
+  name: vault-ingress
   namespace: vault
 spec:
   entryPoints:
@@ -10,5 +10,5 @@ spec:
     - kind: Rule
       match: "Host(`vault.home.lab`)"
       services:
-        - name: "vault"
+        - name: vault
           port: 8200
