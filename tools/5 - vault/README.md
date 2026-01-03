@@ -24,24 +24,73 @@ kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisione
 
 
 # Install Vault using Helm and custom values
-helm install vault hashicorp/vault -n vault -f ./vault_values.yaml
+helm install vault hashicorp/vault -n vault -f ./vault/vault_values.yaml
 ```
 
 ---
 
-## 3. Initialize & Unseal Vault
+## 3. Initialize Vault
 After the first install, manually initialize Vault and store the unseal keys safely.
 ```bash
 kubectl exec -it vault-0 -n vault -- vault operator init
 ```
 
+---
 
-Copy the unseal keys, paste it to `vault_secret.yaml` and then manually apply that manifest into your  Kubernetes cluster
+## 4. Unseal cronJob Vault
+Copy the unseal keys, paste it to `vault/vault_unsealed_secret.yaml` and then manually apply that manifest into your  Kubernetes cluster
 ```bash
-kubectl apply -f ./vault_secret.yaml -n vault
+kubectl apply -f ./vault/vault_unseal_secret.yaml
+```
+
+After that you should apply CronJob which will track unseal status of your vault.
+
+```bash
+kubectl apply -f ./vault/vault_unseal_cronjob.yaml
 ```
 
 ---
 
-## 4. Unseal Vault
-Now you may add `vault_unseal` dir to your active argocd and all necessery resources will be automatically created for you
+## 5. Enable Vault WebUI
+In case if you want use WebUI of Vault apply that manifest
+
+```bash
+kubectl apply -f ./vault/vault_ingress.yaml
+```
+
+---
+
+## 6. Enable Vault:Kubernetes auth
+
+```bash
+kubectl exec -it vault-0 -n vault -- vault auth enable kubernetes
+kubectl exec -it vault-0 -n vault -- vault write kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"
+
+kubectl exec -it vault-0 -n vault -- vault write auth/kubernetes/role/argocd \
+  bound_service_account_names=argocd-repo-server \
+  bound_service_account_namespaces=argocd \
+  policies=my-app-policy \
+  ttl=1h
+```
+
+---
+
+## 7. Enable KV2 v2 and create a policy
+```bash
+kubectl exec -it vault-0 -n vault -- vault secrets enable -path=kv kv-v2
+kubectl exec -it vault-0 -n vault -- vault policy write my-app-policy ./vault/vault_policy.hcl
+```
+
+
+## 8. Apply all manifests from ./argocd_plugin dir
+Now you may apply all manifests from the ./argocd_plugin dir.
+```bash
+kubectl apply -f ./argocd_plugin/avp_plugin.yaml
+
+kubectl apply -f ./argocd_plugin/avp_rbac.yaml
+
+kubectl apply -f ./argocd_plugin/vault_config_secret.yaml
+
+helm upgrade argocd argo/argo-cd -n argocd -f ./argocd_plugin/argocd_values.yaml
+```
+

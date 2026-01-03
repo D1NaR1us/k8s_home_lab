@@ -19,13 +19,29 @@ helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
 ```
 
-To install ArgoCD with custom values in our environment run commands
+To install ArgoCD with custom values in our environment run commands and paste into argocd_secret.yaml in base64 format
 
 ```
-export ARGO_PWD=<YourPassToLogin>
-export ARGO_PWD_ENCRYPTED=$(htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a/')
-helm insatll argocd argo/argo-cd --values ./argo_values.yaml -n argocd --set configs.secret.argocdServerAdminPassword=${ARGO_PWD_ENCRYPTED}
+#admin.password
+ARGO_PWD=<YourPassToLogin>
+ARGO_PWD_ENCRYPTED=$(htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a/')
+echo $ARGO_PWD_ENCRYPTED -n | base64 -w 0
+
+#admin.passwordMtime
+PASSWORD_dMtime=$(date -u +"%Y-%m-%dT%H:%M:%SZ" | tr -d '\n' | base64)
+echo $PASSWORD_dMtime
+
+#server.secretkey
+Secret_Key=$(openssl rand -base64 32)
+echo $Secret_Key
 ```
+
+Now you may install (or upgrade) your helm
+
+```
+helm insatll argocd argo/argo-cd --values ./argo_values.yaml -n argocd
+```
+
 Now you able to login https://argocd.home.lab as admin with your password. Don't forget add IP for that resource to your DNS. IP should be traefik LB address.
 
 > [!NOTE]

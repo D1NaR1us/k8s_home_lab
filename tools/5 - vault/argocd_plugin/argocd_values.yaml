@@ -1,0 +1,75 @@
+## Argo Configs
+configs:
+  # Argo CD configuration parameters
+  ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cmd-params-cm.yaml
+  params:
+    ## Server properties
+    # -- Run server without TLS
+    server.insecure: true
+  secret:
+    create: false
+
+# -- Array of extra K8s manifests to deploy
+## Note: Supports use of custom Helm templates
+extraObjects:
+  - apiVersion: traefik.io/v1alpha1
+    kind: IngressRoute
+    metadata:
+      name: "{{ .Release.Name }}-ingress"
+      namespace: argocd
+    spec:
+      entryPoints:
+        - websecure
+      routes:
+        - kind: Rule
+          match: "Host(`{{ .Release.Name }}.home.lab`)"
+          services:
+            - name: "{{ .Release.Name }}-server"
+              port: 80
+repoServer:
+  initContainers:
+    - name: install-avp
+      image: alpine:3.20
+      command: ["/bin/sh", "-c"]
+      env:
+        - name: AVP_VERSION
+          value: "1.18.1"
+      args:
+        - |
+          apk add --no-cache curl && \
+          curl -L \
+            -o /custom-bin/argocd-vault-plugin \
+            https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64 && \
+          chmod +x /custom-bin/argocd-vault-plugin
+      volumeMounts:
+        - name: avp-bin
+          mountPath: /custom-bin
+
+  extraContainers:
+    - name: argocd-vault-plugin
+      command: ["/var/run/argocd/argocd-cmp-server"]
+      image: alpine:3.20
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      envFrom:
+        - secretRef:
+            name: vault-config
+      volumeMounts:
+        - name: var-files
+          mountPath: /var/run/argocd
+        - name: plugins
+          mountPath: /home/argocd/cmp-server/plugins
+        - name: cmp-config
+          mountPath: /home/argocd/cmp-server/config/plugin.yaml
+          subPath: plugin.yaml
+        - name: avp-bin
+          mountPath: /usr/local/bin/argocd-vault-plugin
+          subPath: argocd-vault-plugin
+
+  volumes:
+    - name: avp-bin
+      emptyDir: {}
+    - name: cmp-config
+      configMap:
+        name: avp-cmp-config
