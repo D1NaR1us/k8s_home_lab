@@ -10,7 +10,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 100Gi
+      storage: 200Gi
 
 --- 
 
@@ -23,7 +23,7 @@ spec:
   accessModes: 
     - ReadWriteMany
   capacity: 
-    storage: 100Gi
+    storage: 200Gi
   nfs: 
     path: "/mnt/home-media"
     server: 192.168.50.3
