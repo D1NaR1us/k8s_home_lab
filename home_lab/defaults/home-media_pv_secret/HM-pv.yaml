@@ -28,3 +28,7 @@ spec:
     path: "/mnt/home-media"
     server: 192.168.50.3
   storageClassName: nfs
+  mountOptions:
+    - vers=3
+    - nolock
+    - tcp
