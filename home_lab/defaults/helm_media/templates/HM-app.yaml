@@ -27,11 +27,13 @@ spec:
         imagePullPolicy: Always
         env:
         - name: TZ
-          value: "Asia/Yerevan"
+          value: "Europe/Sofia"
         - name: PUID
           value: "1000"
         - name: PGID
           value: "1000"
+        - name: CHOWN_CONFIG
+          value: "false"
         ports:
         - name: {{ .Release.Name }}-web
           containerPort: {{ .Values.container.port }}
