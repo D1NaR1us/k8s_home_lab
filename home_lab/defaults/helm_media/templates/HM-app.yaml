@@ -38,10 +38,10 @@ spec:
         volumeMounts:
         - name: hm-volume
           mountPath: ./data/downloads
-          subPath: ./data_my_new/Downloads
+          subPath: ./data_my/Downloads
         - name: hm-volume
           mountPath: ./config
-          subPath: ./data_my_new/home-media/{{ .Release.Name }}/config
+          subPath: ./data_my/home-media/{{ .Release.Name }}/config
         resources:
           requests:
             memory: 500Mi
