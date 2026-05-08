@@ -32,8 +32,6 @@ spec:
           value: "1000"
         - name: PGID
           value: "1000"
-        - name: LSIO_SET_PRMS
-          value: "0"
         ports:
         - name: {{ .Release.Name }}-web
           containerPort: {{ .Values.container.port }}
