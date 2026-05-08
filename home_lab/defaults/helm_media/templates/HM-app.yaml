@@ -32,8 +32,8 @@ spec:
           value: "1000"
         - name: PGID
           value: "1000"
-        - name: CHOWN_CONFIG
-          value: "false"
+        # - name: CHOWN_CONFIG
+        #   value: "false"
         ports:
         - name: {{ .Release.Name }}-web
           containerPort: {{ .Values.container.port }}
