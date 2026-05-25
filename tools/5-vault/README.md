@@ -94,3 +94,40 @@ kubectl apply -f ./argocd_plugin/vault_config_secret.yaml
 helm upgrade argocd argo/argo-cd -n argocd -f ./argocd_plugin/argocd_values.yaml
 ```
 
+## 9. Store Postgres credentials for home-media apps (sonarr/radarr)
+One-time setup. Run inside the vault pod. Credentials are stored in Vault only -- never in git.
+```bash
+kubectl exec -it vault-0 -n vault -- /bin/sh
+
+# Inside the vault pod:
+vault login   # use your root token or admin token
+
+vault kv put kv/home-media/postgres \
+  user=postgres \
+  password=<YOUR_POSTGRES_PASSWORD> \
+  host=192.168.50.4 \
+  port=5432
+
+# Verify:
+vault kv get kv/home-media/postgres
+exit
+```
+
+Then register the home-media Kubernetes auth role so init containers can authenticate:
+```bash
+kubectl exec -it vault-0 -n vault -- vault write auth/kubernetes/role/home-media \
+  bound_service_account_names=home-media-sa \
+  bound_service_account_namespaces=home-media \
+  policies=my-app-policy \
+  ttl=15m
+```
+
+How it works at runtime:
+  1. Pod starts, init container runs before sonarr/radarr
+  2. Init container authenticates to Vault using the pod's K8s ServiceAccount JWT
+  3. Fetches user/password/host/port from kv/home-media/postgres
+  4. If config.xml missing  -> creates it with Postgres block
+  5. If config.xml exists   -> injects Postgres block before </Config>
+  6. If Postgres block already there -> skips (idempotent, safe on pod restarts)
+  7. Main container starts, config.xml is ready
+

@@ -4,7 +4,7 @@ metadata:
   name: vault-unseal
   namespace: vault
 spec:
-  schedule: "*/2 * * * *"   # каждые 2 минуты
+  schedule: "*/2 * * * *"   # every 2 minutes
   jobTemplate:
     spec:
       template:

@@ -1,4 +1,10 @@
 container:
   image: nginx:latest
   port: 80
-  targetPort: 80
+
+postgres:
+  enabled: false
+  vaultPath: kv/home-media/postgres
+  vaultRole: home-media
+  vaultAddr: http://vault.vault.svc.cluster.local:8200
+

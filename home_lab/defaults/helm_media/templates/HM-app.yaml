@@ -18,9 +18,77 @@ spec:
         main: hm-app
         app: {{ .Release.Name }}-app
     spec:
-      # nodeSelector:
-      #   {{ if eq .Release.Name "jellyfin" }}workload: "gpu"
-      #   {{ end }}
+      serviceAccountName: home-media-sa
+      {{- if .Values.postgres.enabled }}
+      initContainers:
+      - name: postgres-config-init
+        image: hashicorp/vault:1.15
+        env:
+        - name: VAULT_ADDR
+          value: {{ .Values.postgres.vaultAddr }}
+        - name: VAULT_ROLE
+          value: {{ .Values.postgres.vaultRole }}
+        - name: VAULT_PATH
+          value: {{ .Values.postgres.vaultPath }}
+        - name: CONFIG_PATH
+          value: /config/config.xml
+        command:
+        - /bin/sh
+        - -c
+        - |
+          echo "Authenticating to Vault via Kubernetes auth..."
+          JWT=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+          VAULT_TOKEN=$(vault write -field=token auth/kubernetes/login \
+            role=$VAULT_ROLE \
+            jwt=$JWT)
+
+          if [ -z "$VAULT_TOKEN" ]; then
+            echo "ERROR: Failed to get Vault token"
+            exit 1
+          fi
+          export VAULT_TOKEN
+
+          echo "Fetching Postgres credentials from Vault..."
+          PG_USER=$(vault kv get -field=user $VAULT_PATH)
+          PG_PASS=$(vault kv get -field=password $VAULT_PATH)
+          PG_HOST=$(vault kv get -field=host $VAULT_PATH)
+          PG_PORT=$(vault kv get -field=port $VAULT_PATH)
+
+          if [ -z "$PG_USER" ] || [ -z "$PG_PASS" ] || [ -z "$PG_HOST" ] || [ -z "$PG_PORT" ]; then
+            echo "ERROR: One or more Postgres values missing from Vault"
+            exit 1
+          fi
+
+          PG_BLOCK="  <PostgresUser>${PG_USER}</PostgresUser>
+            <PostgresPassword>${PG_PASS}</PostgresPassword>
+            <PostgresPort>${PG_PORT}</PostgresPort>
+            <PostgresHost>${PG_HOST}</PostgresHost>
+            <AnalyticsEnabled>False</AnalyticsEnabled>
+            <UpdateAutomatically>True</UpdateAutomatically>"
+
+          if [ ! -f "$CONFIG_PATH" ]; then
+            echo "config.xml not found, creating minimal config with Postgres block..."
+            cat > $CONFIG_PATH <<EOF
+          <Config>
+          ${PG_BLOCK}
+          </Config>
+          EOF
+            echo "config.xml created."
+          else
+            echo "config.xml exists, patching Postgres block..."
+            if grep -q "<PostgresUser>" $CONFIG_PATH; then
+              echo "Postgres block already present, skipping."
+            else
+              # Insert Postgres block before closing </Config>
+              sed -i "s|</Config>|${PG_BLOCK}\n</Config>|" $CONFIG_PATH
+              echo "Postgres block injected."
+            fi
+          fi
+        volumeMounts:
+        - name: hm-volume
+          mountPath: /config
+          subPath: data_my/home-media/{{ .Release.Name }}/config
+      {{- end }}
       containers:
       - name: {{ .Release.Name }}
         image: {{ .Values.container.image }}
@@ -37,11 +105,11 @@ spec:
           containerPort: {{ .Values.container.port }}
         volumeMounts:
         - name: hm-volume
-          mountPath: ./data/downloads
-          subPath: ./data_my/Downloads
+          mountPath: /data/downloads
+          subPath: data_my/Downloads
         - name: hm-volume
-          mountPath: ./config
-          subPath: ./data_my/home-media/{{ .Release.Name }}/config
+          mountPath: /config
+          subPath: data_my/home-media/{{ .Release.Name }}/config
         resources:
           requests:
             memory: 500Mi

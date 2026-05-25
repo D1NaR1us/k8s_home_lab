@@ -1,21 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
-metadata: 
-  name: jackett
+metadata:
+  name: home-media-pv
   namespace: argocd
-spec: 
+spec:
   destination:
     name: in-cluster
     namespace: home-media
   source:
-    path: home_lab/defaults/helm_media
+    path: home_lab/defaults/home-media_pv_secret
     repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
     targetRevision: HEAD
-    helm:
-      values: |
-        container:
-          image: linuxserver/jackett:latest
-          port: 9117
   project: default
   syncPolicy:
     automated:

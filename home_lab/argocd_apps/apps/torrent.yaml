@@ -6,7 +6,7 @@ metadata:
 spec: 
   destination:
     name: in-cluster
-    namespace: argocd
+    namespace: home-media
   source:
     path: home_lab/defaults/helm_media
     repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
@@ -16,7 +16,6 @@ spec:
         container:
           image: linuxserver/qbittorrent:latest
           port: 8080
-          targetPort: 8080
   project: default
   syncPolicy:
     automated:

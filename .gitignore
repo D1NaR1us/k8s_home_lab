@@ -1,0 +1,24 @@
+# Secret files - never commit these
+*unseal_secret*
+*unseal-secret*
+argocd_secret.yaml
+vault_config_secret.yaml
+*.secret.yaml
+
+# SSL certificates and keys
+SSL_Certs/
+*.pem
+*.key
+*.csr
+*.p12
+*.pfx
+
+# Local overrides
+*.local.yaml
+kubeconfig
+kube.config
+*.kubeconfig
+
+# OS noise
+.DS_Store
+Thumbs.db
