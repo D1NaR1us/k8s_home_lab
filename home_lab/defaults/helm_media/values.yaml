@@ -4,7 +4,4 @@ container:
 
 postgres:
   enabled: false
-  vaultPath: kv/home-media/postgres
-  vaultRole: home-media
-  vaultAddr: http://vault.vault.svc.cluster.local:8200
 

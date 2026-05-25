@@ -22,42 +22,35 @@ spec:
       {{- if .Values.postgres.enabled }}
       initContainers:
       - name: postgres-config-init
-        image: hashicorp/vault:1.15
+        image: busybox:1.36
         env:
-        - name: VAULT_ADDR
-          value: {{ .Values.postgres.vaultAddr }}
-        - name: VAULT_ROLE
-          value: {{ .Values.postgres.vaultRole }}
-        - name: VAULT_PATH
-          value: {{ .Values.postgres.vaultPath }}
+        - name: PG_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-postgres-creds
+              key: user
+        - name: PG_PASS
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-postgres-creds
+              key: password
+        - name: PG_HOST
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-postgres-creds
+              key: host
+        - name: PG_PORT
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-postgres-creds
+              key: port
         - name: CONFIG_PATH
           value: /config/config.xml
         command:
         - /bin/sh
         - -c
         - |
-          echo "Authenticating to Vault via Kubernetes auth..."
-          JWT=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
-          VAULT_TOKEN=$(vault write -field=token auth/kubernetes/login \
-            role=$VAULT_ROLE \
-            jwt=$JWT)
-
-          if [ -z "$VAULT_TOKEN" ]; then
-            echo "ERROR: Failed to get Vault token"
-            exit 1
-          fi
-          export VAULT_TOKEN
-
-          echo "Fetching Postgres credentials from Vault..."
-          PG_USER=$(vault kv get -field=user $VAULT_PATH)
-          PG_PASS=$(vault kv get -field=password $VAULT_PATH)
-          PG_HOST=$(vault kv get -field=host $VAULT_PATH)
-          PG_PORT=$(vault kv get -field=port $VAULT_PATH)
-
-          if [ -z "$PG_USER" ] || [ -z "$PG_PASS" ] || [ -z "$PG_HOST" ] || [ -z "$PG_PORT" ]; then
-            echo "ERROR: One or more Postgres values missing from Vault"
-            exit 1
-          fi
+          echo "Checking config.xml..."
 
           PG_BLOCK="  <PostgresUser>${PG_USER}</PostgresUser>
             <PostgresPassword>${PG_PASS}</PostgresPassword>
@@ -67,7 +60,7 @@ spec:
             <UpdateAutomatically>True</UpdateAutomatically>"
 
           if [ ! -f "$CONFIG_PATH" ]; then
-            echo "config.xml not found, creating minimal config with Postgres block..."
+            echo "config.xml not found, creating with Postgres block..."
             cat > $CONFIG_PATH <<EOF
           <Config>
           ${PG_BLOCK}
@@ -75,11 +68,10 @@ spec:
           EOF
             echo "config.xml created."
           else
-            echo "config.xml exists, patching Postgres block..."
+            echo "config.xml exists, checking for Postgres block..."
             if grep -q "<PostgresUser>" $CONFIG_PATH; then
               echo "Postgres block already present, skipping."
             else
-              # Insert Postgres block before closing </Config>
               sed -i "s|</Config>|${PG_BLOCK}\n</Config>|" $CONFIG_PATH
               echo "Postgres block injected."
             fi
