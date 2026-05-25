@@ -18,7 +18,6 @@ spec:
         main: hm-app
         app: {{ .Release.Name }}-app
     spec:
-      serviceAccountName: home-media-sa
       {{- if .Values.postgres.enabled }}
       initContainers:
       - name: postgres-config-init
