@@ -16,6 +16,9 @@ spec:
         container:
           image: ghcr.io/gethomepage/homepage:latest
           port: 3000
+          extraEnv:
+            - name: HOMEPAGE_ALLOWED_HOSTS
+              value: "homepage.home.lab"
   project: default
   syncPolicy:
     automated:

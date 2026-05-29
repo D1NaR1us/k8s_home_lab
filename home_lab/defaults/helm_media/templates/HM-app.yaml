@@ -91,6 +91,9 @@ spec:
           value: "1000"
         - name: PGID
           value: "1000"
+        {{- if .Values.container.extraEnv }}
+        {{- toYaml .Values.container.extraEnv | nindent 8 }}
+        {{- end }}
         ports:
         - name: {{ .Release.Name }}-web
           containerPort: {{ .Values.container.port }}
