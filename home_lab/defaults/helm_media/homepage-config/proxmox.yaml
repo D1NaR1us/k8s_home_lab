@@ -1,0 +1,8 @@
+---
+# Proxmox API token - PVEAuditor (read-only)
+# Create token: Datacenter → API Tokens → Add
+# Role: PVEAuditor (Sys.Audit, VM.Audit, Datastore.Audit) on /
+pve:
+  url: https://<PROXMOX0_IP>:8006
+  token: root@pam!homepage
+  secret: <PROXMOX_API_TOKEN_SECRET>

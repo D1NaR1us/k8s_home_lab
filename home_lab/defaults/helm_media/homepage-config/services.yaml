@@ -1,0 +1,95 @@
+---
+- Media:
+    - Jellyfin:
+        href: https://jellyfin.home.lab
+        description: Media Server
+        icon: jellyfin.png
+        widget:
+          type: jellyfin
+          url: http://<JELLYFIN_IP>:8096
+          key: <JELLYFIN_API_KEY>
+          enableBlocks: true
+          enableNowPlaying: true
+
+- Downloads:
+    - qBittorrent:
+        href: https://qbittorrent.home.lab
+        description: Torrent Client
+        icon: qbittorrent.png
+        widget:
+          type: qbittorrent
+          url: http://bittorrent-svc.home-media.svc.cluster.local:8080
+          username: admin
+          password: <QBITTORRENT_PASSWORD>
+
+    - Jackett:
+        href: https://jackett.home.lab
+        description: Indexer Proxy
+        icon: jackett.png
+        widget:
+          type: jackett
+          url: http://jackett-svc.home-media.svc.cluster.local:9117
+
+- Arr Stack:
+    - Sonarr:
+        href: https://sonarr.home.lab
+        description: TV Shows
+        icon: sonarr.png
+        widget:
+          type: sonarr
+          url: http://sonarr-svc.home-media.svc.cluster.local:8989
+          key: <SONARR_API_KEY>
+          enableQueue: true
+
+    - Radarr:
+        href: https://radarr.home.lab
+        description: Movies
+        icon: radarr.png
+        widget:
+          type: radarr
+          url: http://radarr-svc.home-media.svc.cluster.local:7878
+          key: <RADARR_API_KEY>
+          enableQueue: true
+
+- Infrastructure:
+    - ArgoCD:
+        href: https://argocd.home.lab
+        description: GitOps CD
+        icon: argo-cd.png
+        widget:
+          type: argocd
+          url: http://argocd-server.argocd.svc.cluster.local:80
+          key: <ARGOCD_API_TOKEN>
+
+    - Pi-hole:
+        href: http://<PIHOLE_IP>
+        description: DNS Ad Blocker
+        icon: pi-hole.png
+        widget:
+          type: pihole
+          url: http://<PIHOLE_IP>
+          version: 6
+
+- Infrastructure Proxmox:
+    - Proxmox10:
+        href: https://proxmox.home.lab:8006
+        description: NUC6i3SYK · 24GB
+        icon: proxmox.png
+        widget:
+          type: proxmox
+          url: https://<PROXMOX0_IP>:8006
+          username: root@pam!homepage
+          password: <PROXMOX_API_TOKEN_SECRET>
+          insecure: true
+          node: proxmox0
+    - Proxmox11:
+        href: https://proxmox1.home.lab:8006
+        description: NUC8i7HVK · 32GB
+        icon: proxmox.png
+        widget:
+          type: proxmox
+          url: https://<PROXMOX1_IP>:8006
+          username: root@pam!homepage
+          password: <PROXMOX_API_TOKEN_SECRET>
+          insecure: true
+          node: proxmox1

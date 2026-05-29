@@ -1,0 +1,15 @@
+---
+- datetime:
+    text_size: xl
+    format:
+      timeStyle: short
+      dateStyle: short
+      hourCycle: h23
+
+- openmeteo:
+    label: Sofia
+    latitude: 42.6977
+    longitude: 23.3219
+    timezone: Europe/Sofia
+    units: metric
+    cache: 5
