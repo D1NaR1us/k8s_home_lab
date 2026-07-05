@@ -16,12 +16,6 @@ spec:
         container:
           image: linuxserver/obsidian:latest
           port: 3000
-          extraVolumeMounts:
-            - name: tmp-volume
-              mountPath: /tmp
-        extraVolumes:
-          - name: tmp-volume
-            emptyDir: {}
   project: default
   syncPolicy:
     automated:
