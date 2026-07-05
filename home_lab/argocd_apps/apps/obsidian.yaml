@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: 
+  name: obsidian
+  namespace: argocd
+spec: 
+  destination:
+    name: in-cluster
+    namespace: home-media
+  source:
+    path: home_lab/defaults/helm_media
+    repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
+    targetRevision: HEAD
+    helm:
+      values: |
+        container:
+          image: linuxserver/obsidian:latest
+          port: 3001
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
