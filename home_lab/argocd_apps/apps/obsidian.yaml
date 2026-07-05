@@ -16,9 +16,6 @@ spec:
         container:
           image: linuxserver/obsidian:latest
           port: 3000
-          extraEnv:
-            - name: CUSTOM_WS_PORT
-              value: "websockets"
   project: default
   syncPolicy:
     automated:
