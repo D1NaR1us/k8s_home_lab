@@ -94,9 +94,9 @@ spec:
           value: "1000"
         - name: PGID
           value: "1000"
-        {{- if .Values.container.extraEnv }}
-        {{- toYaml .Values.container.extraEnv | nindent 8 }}
-        {{- end }}
+        # {{- if .Values.container.extraEnv }}
+        # {{- toYaml .Values.container.extraEnv | nindent 8 }}
+        # {{- end }}
         ports:
         - name: {{ .Release.Name }}-web
           containerPort: {{ .Values.container.port }}
@@ -118,6 +118,6 @@ spec:
       - name: hm-volume
         persistentVolumeClaim:
           claimName: hm-claim
-      {{- if .Values.extraVolumes }}
-      {{- toYaml .Values.extraVolumes | nindent 6 }}
-      {{- end }}
+      # {{- if .Values.extraVolumes }}
+      # {{- toYaml .Values.extraVolumes | nindent 6 }}
+      # {{- end }}
