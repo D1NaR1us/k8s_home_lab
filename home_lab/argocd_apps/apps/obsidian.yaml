@@ -16,10 +16,9 @@ spec:
         container:
           image: linuxserver/obsidian:latest
           port: 3000
-        volumeMounts:
-        - name: hm-volume
-          mountPath: /tmp
-          subPath: data_my/home-media/obsidian/tmp
+        extraEnv:
+            - name: TMPDIR
+              value: /config/.tmp
   project: default
   syncPolicy:
     automated:
