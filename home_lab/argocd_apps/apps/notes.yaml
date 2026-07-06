@@ -39,6 +39,8 @@ spec:
                 key: port
           - name: POSTGRES_DB
             value: "notediscovery_db"
+          - name: DB_TYPE
+            value: "postgresql"
           extraVolumeMounts:
             - name: hm-volume
               mountPath: /app/data
