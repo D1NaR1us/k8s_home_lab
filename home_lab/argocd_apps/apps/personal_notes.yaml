@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: 
+  name: personal_notes
+  namespace: argocd
+spec: 
+  destination:
+    name: in-cluster
+    namespace: home-media
+  source:
+    path: home_lab/defaults/helm_media
+    repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
+    targetRevision: HEAD
+    helm:
+      values: |
+        container:
+          image: ghcr.io/gamosoft/notediscovery:latest
+          port: 8000
+          extraVolumeMounts:
+            - name: hm-volume
+              mountPath: /app/data
+              subPath: Agents/obsidian/Alice-personal
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
