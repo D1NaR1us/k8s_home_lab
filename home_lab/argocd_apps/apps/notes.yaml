@@ -14,11 +14,11 @@ spec:
     helm:
       values: |
         container:
-          image: ghcr.io/silverbulletmd/silverbullet:latest
-          port: 3000
+          image: ghcr.io/trilium-next/trilium-next:latest
+          port: 8080
           extraVolumeMounts:
             - name: hm-volume
-              mountPath: /space
+              mountPath: /home/node/trilium-data
               subPath: Obsidian/Work_Notes
   project: default
   syncPolicy:
