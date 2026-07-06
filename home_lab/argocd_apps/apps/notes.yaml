@@ -19,7 +19,7 @@ spec:
           extraVolumeMounts:
             - name: hm-volume
               mountPath: /app/data
-              subPath: Obsidian/Work_Notes
+              subPath: Obsidian/Personal_Notes
   project: default
   syncPolicy:
     automated:
