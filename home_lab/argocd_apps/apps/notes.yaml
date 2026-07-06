@@ -17,6 +17,26 @@ spec:
           image: ghcr.io/gamosoft/notediscovery:latest
           port: 8000
           env:
+         - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: notes-postgres-creds
+              key: user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: notes-postgres-creds
+              key: password
+        - name: POSTGRES_HOST
+          valueFrom:
+            secretKeyRef:
+              name: notes-postgres-creds
+              key: host
+        - name: POSTGRES_PORT
+          valueFrom:
+            secretKeyRef:
+              name: notes-postgres-creds
+              key: port
           - name: DB_NAME
             value: "notediscovery_db"
           extraVolumeMounts:
