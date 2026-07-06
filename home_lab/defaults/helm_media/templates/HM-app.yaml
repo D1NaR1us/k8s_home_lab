@@ -104,6 +104,9 @@ spec:
         - name: hm-volume
           mountPath: /config
           subPath: data_my/home-media/{{ .Release.Name }}/config
+        {{- if .Values.container.extraVolumeMounts }}
+        {{- toYaml .Values.container.extraVolumeMounts | nindent 8 }}
+        {{- end }}
         resources:
           requests:
             memory: 500Mi
