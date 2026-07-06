@@ -18,7 +18,7 @@ spec:
         main: hm-app
         app: {{ .Release.Name }}-app
     spec:
-      {{- if .Values.postgres.enabled }}
+      {{- if and .Values.postgres.enabled .Values.postgres.injectXml }}
       initContainers:
       - name: postgres-config-init
         image: busybox:1.36
