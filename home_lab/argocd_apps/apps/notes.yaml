@@ -14,11 +14,11 @@ spec:
     helm:
       values: |
         container:
-          image: ghcr.io/logseq/logseq-webapp:latest
-          port: 80
+          image: ghcr.io/gamosoft/notediscovery:latest
+          port: 8000
           extraVolumeMounts:
             - name: hm-volume
-              mountPath: /usr/share/nginx/html/notebook
+              mountPath: /app/data
               subPath: Obsidian/Work_Notes
   project: default
   syncPolicy:
