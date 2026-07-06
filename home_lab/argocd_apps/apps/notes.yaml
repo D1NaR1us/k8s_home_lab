@@ -16,9 +16,6 @@ spec:
         container:
           image: ghcr.io/gamosoft/notediscovery:latest
           port: 8000
-          postgres:
-            enabled: true
-            targetPorts: 8000
           env:
           - name: DB_NAME
             value: "notediscovery_db"
@@ -26,6 +23,9 @@ spec:
             - name: hm-volume
               mountPath: /app/data
               subPath: Obsidian/Work_Notes
+        postgres:
+          enabled: true
+          targetPorts: 8000
   project: default
   syncPolicy:
     automated:
