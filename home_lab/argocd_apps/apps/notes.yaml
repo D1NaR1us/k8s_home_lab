@@ -17,9 +17,9 @@ spec:
           image: ghcr.io/silverbulletmd/silverbullet:latest
           port: 3000
           extraVolumeMounts:
-            - name: app-data-volume
+            - name: hm-volume
               mountPath: /space
-              subPath: /mnt/home-media/Obsidian/Work_Notes
+              subPath: /Obsidian/Work_Notes
   project: default
   syncPolicy:
     automated:
