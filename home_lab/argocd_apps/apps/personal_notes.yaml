@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata: 
-  name: personal_notes
+  name: personal-notes
   namespace: argocd
 spec: 
   destination:
