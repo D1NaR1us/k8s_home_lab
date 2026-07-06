@@ -37,8 +37,8 @@ spec:
               secretKeyRef:
                 name: notes-postgres-creds
                 key: port
-            - name: POSTGRES_DB
-              value: "notediscovery_db"
+          - name: POSTGRES_DB
+            value: "notediscovery_db"
           extraVolumeMounts:
             - name: hm-volume
               mountPath: /app/data
