@@ -16,38 +16,10 @@ spec:
         container:
           image: ghcr.io/gamosoft/notediscovery:latest
           port: 8000
-          env:
-          - name: POSTGRES_USER
-            valueFrom:
-              secretKeyRef:
-                name: notes-postgres-creds
-                key: user
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: notes-postgres-creds
-                key: password
-          - name: POSTGRES_HOST
-            valueFrom:
-              secretKeyRef:
-                name: notes-postgres-creds
-                key: host
-          - name: POSTGRES_PORT
-            valueFrom:
-              secretKeyRef:
-                name: notes-postgres-creds
-                key: port
-          - name: POSTGRES_DB
-            value: "notediscovery_db"
-          - name: DB_TYPE
-            value: "postgresql"
           extraVolumeMounts:
             - name: hm-volume
               mountPath: /app/data
               subPath: Obsidian/Work_Notes
-        postgres:
-          enabled: true
-          targetPorts: 8000
   project: default
   syncPolicy:
     automated:
