@@ -16,6 +16,12 @@ spec:
         container:
           image: ghcr.io/gamosoft/notediscovery:latest
           port: 8000
+          postgres:
+            enabled: true
+            targetPorts: 8000
+          env:
+          - name: DB_NAME
+              value: "notediscovery_db"
           extraVolumeMounts:
             - name: hm-volume
               mountPath: /app/data
