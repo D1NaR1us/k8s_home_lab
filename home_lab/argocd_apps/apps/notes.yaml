@@ -14,7 +14,7 @@ spec:
     helm:
       values: |
         container:
-          image: ghcr.io/trilium-next/trilium-next:latest
+          image: triliumnext/trilium:latest
           port: 8080
           extraVolumeMounts:
             - name: hm-volume
