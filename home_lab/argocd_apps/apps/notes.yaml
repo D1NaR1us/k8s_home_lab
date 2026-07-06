@@ -21,7 +21,7 @@ spec:
             targetPorts: 8000
           env:
           - name: DB_NAME
-              value: "notediscovery_db"
+            value: "notediscovery_db"
           extraVolumeMounts:
             - name: hm-volume
               mountPath: /app/data
