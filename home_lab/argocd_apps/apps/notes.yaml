@@ -14,11 +14,11 @@ spec:
     helm:
       values: |
         container:
-          image: triliumnext/trilium:latest
-          port: 8080
+          image: ghcr.io/logseq/logseq-webapp:latest
+          port: 80
           extraVolumeMounts:
             - name: hm-volume
-              mountPath: /home/node/trilium-data
+              mountPath: /usr/share/nginx/html/notebook
               subPath: Obsidian/Work_Notes
   project: default
   syncPolicy:
