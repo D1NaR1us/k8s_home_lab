@@ -18,7 +18,7 @@ spec:
           port: 3000
           extraVolumeMounts:
             - name: app-data-volume
-              mountPath: /app/data
+              mountPath: /space
               subPath: /mnt/home-media/Obsidian/Work_Notes
   project: default
   syncPolicy:
