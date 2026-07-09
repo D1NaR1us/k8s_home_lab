@@ -20,6 +20,9 @@ spec:
             - name: hm-volume
               mountPath: /app/data
               subPath: Agents/obsidian/Alice-personal
+            - name: hm-volume
+              mountPath: /app/data
+              subPath: Agents/shared/skills
   project: default
   syncPolicy:
     automated:
