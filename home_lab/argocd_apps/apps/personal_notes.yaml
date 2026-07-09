@@ -18,10 +18,10 @@ spec:
           port: 8000
           extraVolumeMounts:
             - name: hm-volume
-              mountPath: /app/data
+              mountPath: /app/data/Alice-personal
               subPath: Agents/obsidian/Alice-personal
             - name: hm-volume
-              mountPath: /app/data
+              mountPath: /app/data/skills
               subPath: Agents/shared/skills
   project: default
   syncPolicy:
