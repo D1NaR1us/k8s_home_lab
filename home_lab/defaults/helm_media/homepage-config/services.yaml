@@ -81,7 +81,7 @@
 - Infrastructure Proxmox:
     - Proxmox10:
         href: https://proxmox.home.lab:8006
-        description: NUC6i3SYK · 24GB
+        description: NUC6i3SYK · 32GB
         icon: proxmox.png
         widget:
           type: proxmox
@@ -92,7 +92,7 @@
           node: proxmox0
     - Proxmox11:
         href: https://proxmox1.home.lab:8006
-        description: NUC8i7HVK · 32GB
+        description: NUC8i7HVK · 64GB
         icon: proxmox.png
         widget:
           type: proxmox
