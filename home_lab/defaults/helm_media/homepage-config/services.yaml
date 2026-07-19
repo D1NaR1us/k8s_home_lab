@@ -10,6 +10,14 @@
           key: <JELLYFIN_API_KEY>
           enableBlocks: true
           enableNowPlaying: true
+    - My Notes:
+        href: https://my-notes.home.lab
+        description: Personal Vault
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/notediscovery.svg
+    - Work Notes:
+        href: https://notes.home.lab
+        description: Work Vault
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/notediscovery.svg
 
 - Downloads:
     - qBittorrent:
