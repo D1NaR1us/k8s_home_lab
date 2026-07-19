@@ -1,4 +1,9 @@
 ---
+- search:
+    provider: google
+    focus: true
+    target: _blank
+
 - datetime:
     text_size: xl
     format:
