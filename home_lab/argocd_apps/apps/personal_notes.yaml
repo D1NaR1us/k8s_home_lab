@@ -14,11 +14,8 @@ spec:
     helm:
       values: |
         container:
-          image: battermanz/hatchdoor:latest
-          port: 42824
-          env:
-          - name: HOST
-            value: "127.0.0.1"
+          image: ghcr.io/gamosoft/notediscovery:latest
+          port: 8000
           extraVolumeMounts:
             - name: hm-volume
               mountPath: /app/data/Alice-personal
@@ -26,9 +23,6 @@ spec:
             - name: hm-volume
               mountPath: /app/data/skills
               subPath: Agents/shared/skills
-            - name: hm-volume
-              mountPath: /data/attachments-inbox
-              subPath: data_my/home-media/my-notes/attachments-inbox
   project: default
   syncPolicy:
     automated:
