@@ -16,8 +16,6 @@ spec:
         container:
           image: battermanz/hatchdoor:latest
           port: 42824
-          env:
-            HOST: 0.0.0.0
           extraVolumeMounts:
             - name: hm-volume
               mountPath: /app/data/Alice-personal
