@@ -11,18 +11,15 @@ spec:
     path: home_lab/defaults/helm_media
     repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
     targetRevision: HEAD
-    plugin:
-      name: argocd-vault-plugin
-      env:
-        - name: HELM_VALUES
-          value: |
-            container:
-              image: linuxserver/radarr:latest
-              port: 7878
-            postgres:
-              enabled: true
-              targetPort: 7878
-              injectXml: true
+    helm:
+      values: |
+        container:
+          image: linuxserver/radarr:latest
+          port: 7878
+        postgres:
+          enabled: true
+          targetPort: 7878
+          injectXml: true
   project: default
   syncPolicy:
     automated:
