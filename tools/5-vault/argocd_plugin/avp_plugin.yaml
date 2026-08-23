@@ -11,8 +11,16 @@ data:
       name: argocd-vault-plugin
     spec:
       generate:
-        command: ["argocd-vault-plugin"]
-        args: ["generate", "."]
+        command: ["sh", "-c"]
+        args:
+          - |
+            set -o pipefail
+            if [ -f Chart.yaml ]; then
+              printf '%s' "$ARGOCD_ENV_HELM_VALUES" > /tmp/helm-values.yaml
+              helm template "$ARGOCD_APP_NAME" -n "$ARGOCD_APP_NAMESPACE" -f /tmp/helm-values.yaml . | argocd-vault-plugin generate -
+            else
+              argocd-vault-plugin generate .
+            fi
       discover:
         find:
           command: ["sh", "-c", "find . -name '*.yaml' | xargs grep -l 'avp.kubernetes.io'"]
