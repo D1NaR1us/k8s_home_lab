@@ -24,7 +24,7 @@ spec:
   capacity:
     storage: 15Gi
   nfs:
-    path: "/mnt/home-media/ai-apps"
+    path: "/mnt/home-media"
     server: 192.168.50.3
   storageClassName: nfs
   mountOptions:
