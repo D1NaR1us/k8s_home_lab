@@ -37,7 +37,6 @@ spec:
           extraVolumeMounts:
             - name: ai-claim
               mountPath: /home/node/.n8n
-              subPath: data_my/ai-apps/n8n
         postgres:
           enabled: true
         tokens:
