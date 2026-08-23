@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: n8n
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: ai-apps
+  source:
+    path: ai_lab/defaults/helm_ai
+    repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
+    targetRevision: HEAD
+    helm:
+      values: |
+        container:
+          image: n8nio/n8n:latest
+          port: 5678
+          env:
+          - name: WEBHOOK_URL
+            value: https://n8n.home.lab/
+          - name: N8N_HOST
+            value: n8n.home.lab
+          - name: N8N_PROTOCOL
+            value: https
+          - name: N8N_PORT
+            value: "5678"
+          - name: GENERIC_TIMEZONE
+            value: Europe/Sofia
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 250m
+            limits:
+              memory: 2Gi
+              cpu: "1"
+          extraVolumeMounts:
+            - name: ai-claim
+              mountPath: /home/node/.n8n
+        postgres:
+          enabled: true
+        tokens:
+          enabled: true
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

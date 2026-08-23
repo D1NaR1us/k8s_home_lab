@@ -1,4 +1,10 @@
 ---
+- AI:
+    - n8n:
+        href: https://n8n.home.lab
+        description: Workflow Automation
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/n8n.svg
+
 - Media:
     - Jellyfin:
         href: https://jellyfin.home.lab

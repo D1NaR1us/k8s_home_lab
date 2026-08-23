@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ai-claim
+  namespace: ai-apps
+spec:
+  volumeName: ai-nfs
+  storageClassName: nfs
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 15Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ai-nfs
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 15Gi
+  nfs:
+    path: "/mnt/home-media/ai-apps"
+    server: 192.168.50.3
+  storageClassName: nfs
+  mountOptions:
+    - vers=3
+    - nolock
+    - tcp

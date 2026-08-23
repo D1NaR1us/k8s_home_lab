@@ -21,4 +21,8 @@ kube.config
 
 # OS noise
 .DS_Store
+._*
 Thumbs.db
+
+# Local tool config with secrets
+opencode.json

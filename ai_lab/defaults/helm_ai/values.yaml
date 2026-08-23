@@ -1,0 +1,27 @@
+namespace: ai-apps
+
+volumeClaimName: ai-claim
+
+container:
+  image: nginx:latest
+  port: 80
+  env: []
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 1Gi
+      cpu: 500m
+  extraVolumeMounts: []
+
+postgres:
+  enabled: false
+  avpPath: kv/data/ai-apps/postgres
+
+tokens:
+  enabled: false
+  avpPath: kv/data/ai-apps/n8n-tokens
+  keys:
+    - OPENAI_API_KEY
+    - N8N_ENCRYPTION_KEY
