@@ -17,11 +17,9 @@ container:
 
 postgres:
   enabled: false
-  avpPath: kv/data/ai-apps/postgres
 
 tokens:
   enabled: false
-  avpPath: kv/data/ai-apps/n8n-tokens
   keys:
     - OPENAI_API_KEY
     - N8N_ENCRYPTION_KEY
