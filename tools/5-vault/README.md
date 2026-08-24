@@ -64,11 +64,22 @@ kubectl apply -f ./vault/vault_ingress.yaml
 
 ```bash
 kubectl exec -it vault-0 -n vault -- vault auth enable kubernetes
-kubectl exec -it vault-0 -n vault -- vault write kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"
 
+# Point the auth method at the in-cluster API server and give it a token-reviewer
+# JWT. This token is what Vault uses to call the Kubernetes TokenReview API to
+# validate client SA tokens during login. It must come from a ServiceAccount with
+# system:auth-delegator — the Helm chart already binds the `vault` SA to it
+# (ClusterRoleBinding `vault-server-binding`), so we reuse the vault SA token.
+# Without a valid token_reviewer_jwt every login fails with "403 permission denied".
+kubectl exec -it vault-0 -n vault -- sh -c 'vault write auth/kubernetes/config \
+  kubernetes_host="https://${KUBERNETES_PORT_443_TCP_ADDR}:443" \
+  token_reviewer_jwt=@/var/run/secrets/kubernetes.io/serviceaccount/token'
+
+# Create the argocd role. `audience` is required from Vault v1.21+.
 kubectl exec -it vault-0 -n vault -- vault write auth/kubernetes/role/argocd \
   bound_service_account_names=argocd-repo-server \
   bound_service_account_namespaces=argocd \
+  audience=https://kubernetes.default.svc.cluster.local \
   policies=my-app-policy \
   ttl=1h
 ```
@@ -130,4 +141,54 @@ How it works at runtime:
   5. If config.xml exists   -> injects Postgres block before </Config>
   6. If Postgres block already there -> skips (idempotent, safe on pod restarts)
   7. Main container starts, config.xml is ready
+
+---
+
+## 10. Plain-manifest AVP pattern (apps that get secrets at sync time)
+
+For apps that receive secrets directly as Kubernetes Secrets (no init container),
+deploy a plain AVP-annotated Secret manifest through a **plain-directory** Argo CD
+Application that uses the AVP plugin. This is how `ai_lab` apps work.
+
+One directory holds one file per app; one dedicated Application renders the whole
+directory:
+
+```yaml
+# ai_lab/defaults/custom_secrets/n8n_secret.yaml  (one file, may hold several Secrets)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: n8n-postgres-creds
+  namespace: ai-apps
+  annotations:
+    avp.kubernetes.io/path: "kv/data/ai-apps/postgres"
+type: Opaque
+stringData:
+  host: <host>
+  port: <port>
+  user: <user>
+  password: <password>
+  database: <database>
+```
+
+```yaml
+# ai_lab/argocd_apps/apps/ai-secrets.yaml
+spec:
+  source:
+    path: ai_lab/defaults/custom_secrets
+    repoURL: <repo>
+    plugin:
+      name: argocd-vault-plugin
+  destination:
+    namespace: ai-apps
+```
+
+Key rules:
+- AVP only runs on **plain-directory** sources. It is **not** invoked for
+  `source.helm` charts, so a Secret generated inside a Helm `templates/` directory
+  will never have its `<...>` placeholders replaced (even with an
+  `avp.kubernetes.io/path` annotation).
+- Keep the Helm chart's Deployment referencing the Secret via `secretKeyRef`; do
+  **not** create the Secret from the chart.
+- One `<app>_secret.yaml` per app keeps secrets grouped and easy to audit.
 
