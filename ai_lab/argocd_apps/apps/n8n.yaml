@@ -17,6 +17,8 @@ spec:
           image: n8nio/n8n:latest
           port: 5678
           env:
+          - name: DB_TYPE
+            value: postgresdb
           - name: WEBHOOK_URL
             value: https://n8n.home.lab/
           - name: N8N_HOST
@@ -39,6 +41,12 @@ spec:
               mountPath: /home/node/.n8n
         postgres:
           enabled: true
+          env:
+            DB_POSTGRESDB_HOST: host
+            DB_POSTGRESDB_PORT: port
+            DB_POSTGRESDB_DATABASE: database
+            DB_POSTGRESDB_USER: user
+            DB_POSTGRESDB_PASSWORD: password
         tokens:
           enabled: true
   project: default

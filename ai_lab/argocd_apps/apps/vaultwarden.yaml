@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vaultwarden
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: ai-apps
+  source:
+    path: ai_lab/defaults/helm_ai
+    repoURL: https://github.com/D1NaR1us/k8s_home_lab.git
+    targetRevision: HEAD
+    helm:
+      values: |
+        container:
+          image: vaultwarden/server:latest
+          port: 80
+          env:
+          - name: DB_CONNECTION
+            value: postgresql
+          - name: DOMAIN
+            value: https://vaultwarden.home.lab
+          - name: TZ
+            value: Europe/Sofia
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: "1"
+          extraVolumeMounts:
+            - name: ai-claim
+              mountPath: /data
+        postgres:
+          enabled: true
+          env:
+            DB_HOST: host
+            DB_PORT: port
+            DB_NAME: database
+            DB_USERNAME: user
+            DB_PASSWORD: password
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

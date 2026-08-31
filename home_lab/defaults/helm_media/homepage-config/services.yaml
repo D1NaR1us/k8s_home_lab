@@ -4,6 +4,10 @@
         href: https://n8n.home.lab
         description: Workflow Automation
         icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/n8n.svg
+    - Vaultwarden:
+        href: https://vaultwarden.home.lab
+        description: Password Manager
+        icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/vaultwarden.svg
 
 - Media:
     - Jellyfin:

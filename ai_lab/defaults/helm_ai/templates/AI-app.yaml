@@ -29,33 +29,13 @@ spec:
         {{- toYaml .Values.container.env | nindent 8 }}
         {{- end }}
         {{- if .Values.postgres.enabled }}
-        - name: DB_TYPE
-          value: postgresdb
-        - name: DB_POSTGRESDB_HOST
+        {{- range $name, $key := .Values.postgres.env }}
+        - name: {{ $name }}
           valueFrom:
             secretKeyRef:
-              name: {{ .Release.Name }}-postgres-creds
-              key: host
-        - name: DB_POSTGRESDB_PORT
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Release.Name }}-postgres-creds
-              key: port
-        - name: DB_POSTGRESDB_DATABASE
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Release.Name }}-postgres-creds
-              key: database
-        - name: DB_POSTGRESDB_USER
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Release.Name }}-postgres-creds
-              key: user
-        - name: DB_POSTGRESDB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Release.Name }}-postgres-creds
-              key: password
+              name: {{ $.Release.Name }}-postgres-creds
+              key: {{ $key }}
+        {{- end }}
         {{- end }}
         {{- if .Values.tokens.enabled }}
         {{- range .Values.tokens.keys }}
