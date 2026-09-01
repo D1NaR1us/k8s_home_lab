@@ -17,8 +17,6 @@ spec:
           image: vaultwarden/server:latest
           port: 80
           env:
-          - name: DB_CONNECTION
-            value: postgresql
           - name: DOMAIN
             value: https://vaultwarden.home.lab
           - name: TZ
