@@ -36,11 +36,7 @@ spec:
         postgres:
           enabled: true
           env:
-            DB_HOST: host
-            DB_PORT: port
-            DB_NAME: database
-            DB_USERNAME: user
-            DB_PASSWORD: password
+            DATABASE_URL: url
   project: default
   syncPolicy:
     automated:
