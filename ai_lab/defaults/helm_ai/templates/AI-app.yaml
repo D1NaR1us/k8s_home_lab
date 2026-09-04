@@ -38,13 +38,9 @@ spec:
         {{- end }}
         {{- end }}
         {{- if .Values.tokens.enabled }}
-        {{- range .Values.tokens.keys }}
-        - name: {{ . }}
-          valueFrom:
-            secretKeyRef:
-              name: {{ $.Release.Name }}-tokens
-              key: {{ . }}
-        {{- end }}
+        envFrom:
+        - secretRef:
+            name: {{ $.Release.Name }}-tokens
         {{- end }}
         ports:
         - name: {{ .Release.Name }}-web
