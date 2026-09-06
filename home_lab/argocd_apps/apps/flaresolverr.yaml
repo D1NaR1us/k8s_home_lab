@@ -14,7 +14,7 @@ spec:
     helm:
       values: |
         container:
-          image: ghcr.io/flaresolverr/flaresolverr:latest
+          image: ghcr.io/germondai/trawl:latest
           port: 8191
   project: default
   syncPolicy:
