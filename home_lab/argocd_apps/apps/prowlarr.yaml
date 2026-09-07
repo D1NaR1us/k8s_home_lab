@@ -1,9 +1,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
-metadata: 
-  name: flarerr
+metadata:
+  name: prowlarr
   namespace: argocd
-spec: 
+spec:
   destination:
     name: in-cluster
     namespace: home-media
@@ -14,8 +14,11 @@ spec:
     helm:
       values: |
         container:
-          image: ghcr.io/germondai/trawl:latest
-          port: 8191
+          image: linuxserver/prowlarr:latest
+          port: 9696
+        postgres:
+          enabled: true
+          injectXml: true
   project: default
   syncPolicy:
     automated:
